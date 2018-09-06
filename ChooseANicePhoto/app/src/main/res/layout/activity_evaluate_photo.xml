@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EvaluatePhoto">
+
+    <ImageView
+        android:id="@+id/chosen_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="ContentDescription">
+    </ImageView>
+
+    <Button
+        android:id="@+id/like"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/like"
+        android:onClick="myClickHandler"
+        tools:ignore="HardcodedText"/>
+
+    <Button
+        android:id="@+id/dislike"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dislike"
+        android:onClick="myClickHandler"
+        tools:ignore="HardcodedText"/>
+
+</LinearLayout>
