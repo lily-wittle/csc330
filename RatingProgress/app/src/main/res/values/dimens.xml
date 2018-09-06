@@ -1,0 +1,4 @@
+<resources>
+    <integer name="max_rate">5</integer>
+
+</resources>
