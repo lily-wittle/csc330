@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="topMargin">16dp</dimen>
+    <dimen name="horizLayoutPadding">16dp</dimen>
+    <dimen name="longButtonMargin">16dp</dimen>
+    <dimen name="squareButtonSideLength">60dp</dimen>
+    <dimen name="longButtonHeight">30dp</dimen>
+    <dimen name="bigButtonSideLength">200dp</dimen>
+</resources>
