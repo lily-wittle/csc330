@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Buzz Toast Debug</string>
+    <string name="button_buzz">Buzz</string>
+    <string name="button_toast">Toast</string>
+    <string name="action_hello_world">Hello World Debug</string>
+    <string name="hello_world">Hello World!</string>
+</resources>
