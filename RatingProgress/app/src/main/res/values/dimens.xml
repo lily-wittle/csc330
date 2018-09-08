@@ -1,4 +1,10 @@
 <resources>
-    <integer name="max_rate">5</integer>
+    <dimen name="gap">10dp</dimen>
+    <dimen name="progress_bar_height">20dp</dimen>
+    <dimen name="progress_bar_width">300dp</dimen>
 
+    <integer name="max_rate">5</integer>
+    <integer name="start_rate">0</integer>
+    <integer name="bar_time">5000</integer>
+    <integer name="bar_click_time">500</integer>
 </resources>
