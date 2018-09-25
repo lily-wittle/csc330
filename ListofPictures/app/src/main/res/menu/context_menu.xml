@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <group>
+        <item android:id="@+id/black"
+            android:title="@string/black">
+        </item>
+        <item android:id="@+id/red"
+            android:title="@string/red">
+        </item>
+        <item android:id="@+id/green"
+            android:title="@string/green">
+        </item>
+    </group>
+</menu>

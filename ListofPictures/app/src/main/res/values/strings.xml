@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">List of Pictures</string>
+    <string name="black">Black</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+    <string name="select">Selection</string>
+    <string name="happy">Happy</string>
+    <string name="sad">Sad</string>
+    <string name="crazy">Crazy</string>
+    <string name="angry">Angry</string>
+    <string name="crying">Crying</string>
+
+    <string-array name="pictures_array">
+        <item>Happy</item>
+        <item>Sad</item>
+        <item>Crazy</item>
+        <item>Angry</item>
+        <item>Crying</item>
+    </string-array>
+</resources>
