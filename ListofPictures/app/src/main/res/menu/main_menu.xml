@@ -11,19 +11,29 @@
         <menu android:id="@+id/select_pictures"
             android:checkableBehavior="all">
             <item android:id="@+id/happy"
-                android:title="@string/happy">
+                android:title="@string/happy"
+                android:checkable="true"
+                android:checked="true">
             </item>
             <item android:id="@+id/sad"
-                android:title="@string/sad">
+                android:title="@string/sad"
+                android:checkable="true"
+                android:checked="true">
             </item>
             <item android:id="@+id/crazy"
-                android:title="@string/crazy">
+                android:title="@string/crazy"
+                android:checkable="true"
+                android:checked="true">
             </item>
             <item android:id="@+id/angry"
-                android:title="@string/angry">
+                android:title="@string/angry"
+                android:checkable="true"
+                android:checked="true">
             </item>
             <item android:id="@+id/crying"
-                android:title="@string/crying">
+                android:title="@string/crying"
+                android:checkable="true"
+                android:checked="true">
             </item>
         </menu>
     </item>
