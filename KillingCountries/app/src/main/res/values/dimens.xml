@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="columnWidth">100dp</dimen>
+    <dimen name="verticalSpacing">20dp</dimen>
+    <dimen name="gridSpacing">10dp</dimen>
+    <dimen name="image_size">60dp</dimen>
+
+    <integer name="numColumns">3</integer>
+</resources>
