@@ -1,18 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    style="@style/VertActivityLayout"
     tools:context=".MainActivity">
 
     <LinearLayout
-        style="@style/WelcomeRow">
+        style="@style/HorizRow">
         <TextView
-            style="@style/PlayerName"
+            style="@style/PlayerName.Center_Vert"
             android:id="@+id/p1_name"
             android:text="@string/p1_name"/>
         <Button
-            style="@style/Button.Red" />
+            style="@style/Button.Red"/>
     </LinearLayout>
 
     <RatingBar
@@ -21,13 +19,13 @@
     </RatingBar>
 
     <LinearLayout
-        style="@style/WelcomeRow">
+        style="@style/HorizRow">
         <TextView
-            style="@style/PlayerName"
+            style="@style/PlayerName.Center_Vert"
             android:id="@+id/p2_name"
             android:text="@string/p2_name"/>
         <Button
-            style="@style/Button.Green" />
+            style="@style/Button.Green"/>
     </LinearLayout>
 
     <RatingBar

@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/VertActivityLayout">
+    
+    <LinearLayout
+        style="@style/HorizRow">
+        <Button
+            style="@style/Button.Red"
+            android:id="@+id/p1_turn_indicator"/>
+        <TextView
+            style="@style/PlayerName.Center"
+            android:id="@+id/curr_player_name"
+            android:text="@string/curr_player_name"/>
+        <Button
+            style="@style/Button.Green"
+            android:id="@+id/p2_turn_indicator"/>
+    </LinearLayout>
+
+    <ProgressBar
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="@dimen/progress_bar_width"
+        android:layout_height="@dimen/progress_bar_height"
+        android:layout_gravity="center"
+        android:max="@integer/bar_time">
+    </ProgressBar>
+
+    <LinearLayout
+        style="@style/CenterLayout">
+        <TableLayout
+            style="@style/ContentLayout">
+            <TableRow>
+                <Button
+                    style="@style/SmallButton" />
+                <Button
+                    style="@style/SmallButton"/>
+                <Button
+                    style="@style/SmallButton"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    style="@style/SmallButton"/>
+                <Button
+                    style="@style/SmallButton"/>
+                <Button
+                    style="@style/SmallButton"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    style="@style/SmallButton"/>
+                <Button
+                    style="@style/SmallButton"/>
+                <Button
+                    style="@style/SmallButton"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+    
+    
+</LinearLayout>

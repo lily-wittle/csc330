@@ -8,7 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="WelcomeRow">
+    <style name="VertActivityLayout">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="HorizRow">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -26,11 +32,18 @@
 
     <style name="PlayerName">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">3</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">left</item>
-        <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="PlayerName.Center_Vert">
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="PlayerName.Center">
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="Button">
@@ -48,6 +61,23 @@
         <item name="android:background">#00FF00</item>
     </style>
 
+    <style name="SmallButton">
+        <item name="android:layout_width">@dimen/small_button_size</item>
+        <item name="android:layout_height">@dimen/small_button_size</item>
+        <item name="android:layout_margin">@dimen/small_margin</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="SmallButton.Red">
+        <item name="android:background">#FF0000</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="SmallButton.Green">
+        <item name="android:background">#00FF00</item>
+        <item name="android:clickable">false</item>
+    </style>
+
     <style name="CenterLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -59,6 +89,19 @@
         <item name="android:layout_height">@dimen/start_height</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="MyBar">
+        <item name="android:layout_width">@dimen/progress_bar_width</item>
+        <item name="android:layout_height">@dimen/progress_bar_height</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:max">@integer/bar_time</item>
+    </style>
+
+    <style name="ContentLayout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>
