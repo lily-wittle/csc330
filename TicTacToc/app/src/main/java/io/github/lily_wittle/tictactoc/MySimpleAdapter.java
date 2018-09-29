@@ -26,7 +26,6 @@ public class MySimpleAdapter extends SimpleAdapter {
 
     public void play(int position, int status) {
         play_cell_content[position] = status;
-        Log.i("IN adapter play", "Played " + status);
     }
 
     @Override
