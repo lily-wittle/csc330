@@ -5,9 +5,9 @@
         style="@style/SmallButton"
         android:id="@+id/blank_button"/>
     <Button
-        style="@style/SmallButton.Green"
-        android:id="@+id/green_button"/>
+        style="@style/SmallButton.Two"
+        android:id="@+id/two_button"/>
     <Button
-        style="@style/SmallButton.Red"
-        android:id="@+id/red_button"/>
+        style="@style/SmallButton.One"
+        android:id="@+id/one_button"/>
 </FrameLayout>

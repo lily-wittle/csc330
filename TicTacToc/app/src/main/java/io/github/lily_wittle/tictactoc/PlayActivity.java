@@ -102,10 +102,10 @@ public class PlayActivity extends AppCompatActivity
 
             blank = view.findViewById(R.id.blank_button);
             if (turn == 1) {
-                color = view.findViewById(R.id.red_button);
+                color = view.findViewById(R.id.one_button);
             }
             else {
-                color = view.findViewById(R.id.green_button);
+                color = view.findViewById(R.id.two_button);
             }
 
             // change view to colored button
@@ -168,21 +168,21 @@ public class PlayActivity extends AppCompatActivity
 
     public void switchTurn() {
         // switch whose turn it is
-        View red;
-        View green;
+        View one;
+        View two;
 
-        red = findViewById(R.id.p1_turn_indicator);
-        green = findViewById(R.id.p2_turn_indicator);
+        one = findViewById(R.id.p1_turn_indicator);
+        two = findViewById(R.id.p2_turn_indicator);
 
         if (turn == 1) {
             turn = 2;
-            red.setVisibility(View.INVISIBLE);
-            green.setVisibility(View.VISIBLE);
+            one.setVisibility(View.INVISIBLE);
+            two.setVisibility(View.VISIBLE);
         }
         else {
             turn = 1;
-            green.setVisibility(View.INVISIBLE);
-            red.setVisibility(View.VISIBLE);
+            two.setVisibility(View.INVISIBLE);
+            one.setVisibility(View.VISIBLE);
         }
 
         myProgressBar.setProgress(myProgressBar.getMax());

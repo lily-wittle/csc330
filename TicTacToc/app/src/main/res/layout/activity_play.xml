@@ -4,14 +4,14 @@
     <LinearLayout
         style="@style/HorizRow">
         <Button
-            style="@style/Button.Red"
+            style="@style/Button.One"
             android:id="@+id/p1_turn_indicator"/>
         <TextView
             style="@style/PlayerName.Center"
             android:id="@+id/curr_player_name"
             android:text="@string/curr_player_name"/>
         <Button
-            style="@style/Button.Green"
+            style="@style/Button.Two"
             android:id="@+id/p2_turn_indicator"/>
     </LinearLayout>
 

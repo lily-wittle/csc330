@@ -10,7 +10,7 @@
             android:id="@+id/p1_name"
             android:text="@string/p1_name"/>
         <Button
-            style="@style/Button.Red"/>
+            style="@style/Button.One"/>
     </LinearLayout>
 
     <RatingBar
@@ -25,7 +25,7 @@
             android:id="@+id/p2_name"
             android:text="@string/p2_name"/>
         <Button
-            style="@style/Button.Green"/>
+            style="@style/Button.Two"/>
     </LinearLayout>
 
     <RatingBar
