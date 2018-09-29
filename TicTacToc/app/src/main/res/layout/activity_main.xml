@@ -37,7 +37,9 @@
         style="@style/CenterLayout">
         <Button
             style="@style/StartButton"
-            android:text="@string/start"/>
+            android:id="@+id/start_button"
+            android:text="@string/start"
+            android:onClick="myClickHandler"/>
     </LinearLayout>
 
 </LinearLayout>

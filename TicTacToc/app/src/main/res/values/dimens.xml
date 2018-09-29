@@ -8,9 +8,13 @@
     <dimen name="text_size">32dp</dimen>
     <dimen name="progress_bar_height">20dp</dimen>
     <dimen name="progress_bar_width">300dp</dimen>
+    <dimen name="zero">0dp</dimen>
 
     <integer name="max_rate">5</integer>
     <integer name="start_rate">0</integer>
     <integer name="bar_time">5000</integer>
     <integer name="bar_click_time">50</integer>
+    <integer name="num_col">3</integer>
+    <integer name="grid_weight">10</integer>
+    <integer name="space_weight">8</integer>
 </resources>

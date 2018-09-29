@@ -64,7 +64,6 @@
     <style name="SmallButton">
         <item name="android:layout_width">@dimen/small_button_size</item>
         <item name="android:layout_height">@dimen/small_button_size</item>
-        <item name="android:layout_margin">@dimen/small_margin</item>
         <item name="android:clickable">true</item>
     </style>
 
@@ -102,6 +101,29 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="GridSpacing">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:columnWidth">@dimen/small_button_size</item>
+        <item name="android:numColumns">@integer/num_col</item>
+        <item name="android:layout_margin">@dimen/small_margin</item>
+    </style>
+
+    <style name="Space">
+        <item name="android:layout_width">@dimen/zero</item>
+        <item name="android:layout_weight">@integer/space_weight</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="GridContainer">
+        <item name="android:layout_width">@dimen/zero</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">@integer/grid_weight</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
 </resources>

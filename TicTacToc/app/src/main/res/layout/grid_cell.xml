@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CenterLayout"
+    android:id="@+id/play_cell">
+    <Button
+        style="@style/SmallButton"
+        android:id="@+id/blank_button"/>
+    <Button
+        style="@style/SmallButton.Green"
+        android:id="@+id/green_button"/>
+    <Button
+        style="@style/SmallButton.Red"
+        android:id="@+id/red_button"/>
+</FrameLayout>

@@ -25,34 +25,16 @@
 
     <LinearLayout
         style="@style/CenterLayout">
-        <TableLayout
-            style="@style/ContentLayout">
-            <TableRow>
-                <Button
-                    style="@style/SmallButton" />
-                <Button
-                    style="@style/SmallButton"/>
-                <Button
-                    style="@style/SmallButton"/>
-            </TableRow>
-            <TableRow>
-                <Button
-                    style="@style/SmallButton"/>
-                <Button
-                    style="@style/SmallButton"/>
-                <Button
-                    style="@style/SmallButton"/>
-            </TableRow>
-            <TableRow>
-                <Button
-                    style="@style/SmallButton"/>
-                <Button
-                    style="@style/SmallButton"/>
-                <Button
-                    style="@style/SmallButton"/>
-            </TableRow>
-        </TableLayout>
+        <Space
+            style="@style/Space"  />
+        <LinearLayout
+            style="@style/GridContainer">
+            <GridView
+                style="@style/GridSpacing"
+                android:id="@+id/play_grid">
+            </GridView>
+        </LinearLayout>
+        <Space
+            style="@style/Space" />
     </LinearLayout>
-    
-    
 </LinearLayout>
