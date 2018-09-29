@@ -45,16 +45,6 @@ public class PlayActivity extends AppCompatActivity
         Log.i("IN play onCreate", "Play activity started, turn = " + turn);
     }
 
-    public void playClickHandler(View view) {
-        Log.i("IN play clickHandler", "Play button clicked");
-        if (turn == 1) {
-
-        }
-        else {
-            int a = 1;
-        }
-    }
-
     private void makeGridSimpleAdapter() {
 
         ArrayList<HashMap<String,Integer>> listItems;
@@ -78,6 +68,8 @@ public class PlayActivity extends AppCompatActivity
         View blank;
         View color;
 
+        gridSimpleAdapter.play(position, turn);
+
         blank = view.findViewById(R.id.blank_button);
         if (turn == 1) {
             color = view.findViewById(R.id.red_button);
@@ -88,9 +80,29 @@ public class PlayActivity extends AppCompatActivity
 
         blank.setVisibility(View.INVISIBLE);
         color.setVisibility(View.VISIBLE);
-        gridSimpleAdapter.play(position, turn);
+
+        switchTurn();
 
         Log.i("IN onItemClick", "Made a move");
+    }
+
+    public void switchTurn() {
+        View red;
+        View green;
+
+        red = findViewById(R.id.p1_turn_indicator);
+        green = findViewById(R.id.p2_turn_indicator);
+
+        if (turn == 1) {
+            turn = 2;
+            red.setVisibility(View.INVISIBLE);
+            green.setVisibility(View.VISIBLE);
+        }
+        else {
+            turn = 1;
+            green.setVisibility(View.INVISIBLE);
+            red.setVisibility(View.VISIBLE);
+        }
     }
 
 }

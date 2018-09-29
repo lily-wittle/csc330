@@ -64,7 +64,9 @@
     <style name="SmallButton">
         <item name="android:layout_width">@dimen/small_button_size</item>
         <item name="android:layout_height">@dimen/small_button_size</item>
-        <item name="android:clickable">true</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <style name="SmallButton.Red">
