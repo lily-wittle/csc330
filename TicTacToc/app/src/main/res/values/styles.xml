@@ -54,11 +54,11 @@
     </style>
 
     <style name="Button.Red">
-        <item name="android:background">#FF0000</item>
+        <item name="android:background">@color/playerone</item>
     </style>
 
     <style name="Button.Green">
-        <item name="android:background">#00FF00</item>
+        <item name="android:background">@color/playertwo</item>
     </style>
 
     <style name="SmallButton">
@@ -70,12 +70,12 @@
     </style>
 
     <style name="SmallButton.Red">
-        <item name="android:background">#FF0000</item>
+        <item name="android:background">@color/playerone</item>
         <item name="android:clickable">false</item>
     </style>
 
     <style name="SmallButton.Green">
-        <item name="android:background">#00FF00</item>
+        <item name="android:background">@color/playertwo</item>
         <item name="android:clickable">false</item>
     </style>
 

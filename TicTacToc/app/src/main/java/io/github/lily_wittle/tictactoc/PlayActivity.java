@@ -1,18 +1,20 @@
 package io.github.lily_wittle.tictactoc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.util.Log;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import android.content.Intent;
-
+import android.widget.SimpleAdapter;
 import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ProgressBar;
 
 public class PlayActivity extends AppCompatActivity
         implements OnItemClickListener {
@@ -21,6 +23,9 @@ public class PlayActivity extends AppCompatActivity
     private MySimpleAdapter gridSimpleAdapter;
     private int[] play_cell_content;
     private HashMap<Integer, List<int[]>> winningCombos;
+    private ProgressBar myProgressBar;
+    private int barClickTime;
+    private Handler myHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +33,10 @@ public class PlayActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        turn = (this.getIntent().getIntExtra(
-                "io.github.lily_wittle.tictactoc.who_starts",-1));
-
+        // set whose turn it is
+        turn = this.getIntent().getIntExtra(
+                "io.github.lily_wittle.tictactoc.who_starts",-1);
         View indicator;
-
         if (turn == 1) {
             indicator = findViewById(R.id.p2_turn_indicator);
         }
@@ -41,21 +45,39 @@ public class PlayActivity extends AppCompatActivity
         }
         indicator.setVisibility(View.INVISIBLE);
 
+        // set play time
+        int playTime = this.getIntent().getIntExtra(
+                "io.github.lily_wittle.tictactoc.play_time",5000);
+        if (playTime == 0) {
+            // default if not set in options menu
+            playTime = 5000;
+        }
+        myProgressBar = findViewById(R.id.time_left);
+        myProgressBar.setMax(playTime);
+
+        // make grid adapter
         makeGridSimpleAdapter();
         ((GridView)findViewById(R.id.play_grid)).setAdapter(gridSimpleAdapter);
         ((GridView)findViewById(R.id.play_grid)).setOnItemClickListener(this);
 
+        // initialize globals
         makeComboMap();
         play_cell_content = new int[9];
         Arrays.fill(play_cell_content,0);
+
+        // start progresser
+        myHandler = new Handler();
+        myProgressBar.setProgress(myProgressBar.getMax());
+        barClickTime = getResources().getInteger(R.integer.bar_click_time);
+        myProgresser.run();
 
         Log.i("IN play onCreate", "Play activity started, turn = " + turn);
     }
 
     private void makeGridSimpleAdapter() {
 
-        ArrayList<HashMap<String,Integer>> listItems;
-        HashMap<String,Integer> oneItem;
+        ArrayList<HashMap<String,String>> listItems;
+        HashMap<String,String> oneItem;
         String[] fromHashMapFieldNames = {"index"};
         int[] toListRowFieldIds = {R.id.blank_button};
         int index;
@@ -63,7 +85,8 @@ public class PlayActivity extends AppCompatActivity
         listItems = new ArrayList<>();
         for (index = 0; index < 9; index++) {
             oneItem = new HashMap<>();
-            oneItem.put("index",index);
+            // don't want to display index on button
+            oneItem.put("index","");
             listItems.add(oneItem);
         }
 
@@ -72,6 +95,7 @@ public class PlayActivity extends AppCompatActivity
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // can only play if the space has not already been played in
         if (play_cell_content[position] == 0) {
             View blank;
             View color;
@@ -84,10 +108,10 @@ public class PlayActivity extends AppCompatActivity
                 color = view.findViewById(R.id.green_button);
             }
 
+            // change view to colored button
             blank.setVisibility(View.INVISIBLE);
             color.setVisibility(View.VISIBLE);
 
-            gridSimpleAdapter.play(position, turn);
             play(position);
             switchTurn();
         }
@@ -103,8 +127,10 @@ public class PlayActivity extends AppCompatActivity
             if (play_cell_content[combos.get(i)[0]] == turn &&
                     play_cell_content[combos.get(i)[1]] == turn) {
 
-                Intent returnIntent;
+                // stop progresser
+                myHandler.removeCallbacksAndMessages(null);
 
+                Intent returnIntent;
                 returnIntent = new Intent();
                 returnIntent.putExtra(
                         "io.github.lily_wittle.tictactoc.game_result", turn);
@@ -123,8 +149,10 @@ public class PlayActivity extends AppCompatActivity
             }
         }
         if (isTie) {
-            Intent returnIntent;
+            // stop progresser
+            myHandler.removeCallbacksAndMessages(null);
 
+            Intent returnIntent;
             returnIntent = new Intent();
             returnIntent.putExtra(
                     "io.github.lily_wittle.tictactoc.game_result", 0);
@@ -139,6 +167,7 @@ public class PlayActivity extends AppCompatActivity
 
 
     public void switchTurn() {
+        // switch whose turn it is
         View red;
         View green;
 
@@ -155,6 +184,9 @@ public class PlayActivity extends AppCompatActivity
             green.setVisibility(View.INVISIBLE);
             red.setVisibility(View.VISIBLE);
         }
+
+        myProgressBar.setProgress(myProgressBar.getMax());
+
         Log.i("IN switchTurn", "Switched turn");
     }
 
@@ -242,5 +274,29 @@ public class PlayActivity extends AppCompatActivity
 
         return comboArray;
     }
+
+    @Override
+    public void onBackPressed() {
+        // stop progresser
+        myHandler.removeCallbacksAndMessages(null);
+        super.onBackPressed();
+    }
+
+    private final Runnable myProgresser = new Runnable() {
+
+        public void run() {
+            myProgressBar.setProgress(myProgressBar.getProgress()-barClickTime);
+
+            if (myProgressBar.getProgress() == 0) {
+                // switch turn if run out of time
+                switchTurn();
+            }
+
+            if (!myHandler.postDelayed(myProgresser,barClickTime)) {
+                Log.e("ERROR","Cannot postDelayed");
+            }
+        }
+
+    };
 
 }

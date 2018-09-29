@@ -17,6 +17,7 @@
 
     <ProgressBar
         style="@android:style/Widget.ProgressBar.Horizontal"
+        android:id="@+id/time_left"
         android:layout_width="@dimen/progress_bar_width"
         android:layout_height="@dimen/progress_bar_height"
         android:layout_gravity="center"

@@ -4,4 +4,10 @@
     <string name="p2_name">Player Two</string>
     <string name="start">Start</string>
     <string name="curr_player_name">Player</string>
+    <string name="reset">Reset Tournament</string>
+    <string name="time">Change Play Time</string>
+    <string name="one">1 second</string>
+    <string name="two">2 seconds</string>
+    <string name="five">5 seconds</string>
+    <string name="ten">10 seconds</string>
 </resources>

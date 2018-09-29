@@ -11,48 +11,28 @@ import java.util.Map;
 
 public class MySimpleAdapter extends SimpleAdapter {
 
-    private int[] play_cell_content;
 
     public MySimpleAdapter(Context context,List<? extends Map<String, ?>> data,
                            int resource,String[] keyNames,int[] fieldIds) {
 
         super(context,data,resource,keyNames,fieldIds);
-
-        play_cell_content = new int[getCount()];
-        Arrays.fill(play_cell_content,0);
-
         Log.i("IN adapter constructor", "Created adapter");
-    }
-
-    public void play(int position, int status) {
-        play_cell_content[position] = status;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // method needed to set cells to blank at beginning, not red
 
         View view;
         View blank;
-        View color;
 
         view = super.getView(position, convertView, parent);
 
         blank = view.findViewById(R.id.blank_button);
-        if (play_cell_content[position] == 1) {
-            color = view.findViewById(R.id.red_button);
-            blank.setVisibility(View.INVISIBLE);
-            color.setVisibility(View.VISIBLE);
-        }
-        else if (play_cell_content[position] == 2){
-            color = view.findViewById(R.id.green_button);
-            blank.setVisibility(View.INVISIBLE);
-            color.setVisibility(View.VISIBLE);
-        }
-        else {
-            blank.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.green_button).setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.red_button).setVisibility(View.INVISIBLE);
-        }
+        blank.setVisibility(View.VISIBLE);
+        view.findViewById(R.id.green_button).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.red_button).setVisibility(View.INVISIBLE);
+
         return (view);
     }
 
