@@ -30,8 +30,8 @@ public class MySimpleAdapter extends SimpleAdapter {
 
         blank = view.findViewById(R.id.blank_button);
         blank.setVisibility(View.VISIBLE);
-        view.findViewById(R.id.green_button).setVisibility(View.INVISIBLE);
-        view.findViewById(R.id.red_button).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.two_button).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.one_button).setVisibility(View.INVISIBLE);
 
         return (view);
     }

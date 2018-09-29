@@ -53,11 +53,11 @@
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="Button.Red">
+    <style name="Button.One">
         <item name="android:background">@color/playerone</item>
     </style>
 
-    <style name="Button.Green">
+    <style name="Button.Two">
         <item name="android:background">@color/playertwo</item>
     </style>
 
@@ -69,12 +69,12 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="SmallButton.Red">
+    <style name="SmallButton.One">
         <item name="android:background">@color/playerone</item>
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="SmallButton.Green">
+    <style name="SmallButton.Two">
         <item name="android:background">@color/playertwo</item>
         <item name="android:clickable">false</item>
     </style>

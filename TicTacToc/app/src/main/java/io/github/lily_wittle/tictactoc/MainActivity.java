@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 // reset tournament progress
                 RatingOne.setRating(0);
                 RatingTwo.setRating(0);
+                findViewById(R.id.start_button).setVisibility(View.VISIBLE);
                 return(true);
             // set play time
             case R.id.one:
