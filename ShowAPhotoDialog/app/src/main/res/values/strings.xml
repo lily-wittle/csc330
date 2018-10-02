@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Show A Photo Dialog</string>
+    <string name="main_button">See List</string>
+    <string name="pick_photo">Choose a Photo</string>
+    <string name="dismiss">Dismiss</string>
+    <string-array name="animals">
+        <item>Sea Turtle</item>
+        <item>Whale Shark</item>
+        <item>Dolphin</item>
+        <item>Eagle Ray</item>
+        <item>Sea Star</item>
+    </string-array>
+</resources>
