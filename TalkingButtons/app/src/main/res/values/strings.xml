@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Talking Buttons</string>
+    <string name="turtle">The Turtle</string>
+    <string name="moose">The Moose</string>
+    <string name="shark">The Shark</string>
+    <string name="bear">The Bear</string>
+    <string name="loves">Loves</string>
+    <string name="hates">Hates</string>
+    <string name="talks">Talks To</string>
+    <string name="eats">Eats</string>
+</resources>
