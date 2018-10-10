@@ -13,27 +13,23 @@
         android:gravity="center">
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/turtle"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/turtle"/>
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/moose"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/moose"/>
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/shark"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/shark"/>
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/bear"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/bear"/>
 
     </LinearLayout>
@@ -45,27 +41,23 @@
         android:gravity="center">
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/loves"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/loves"/>
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/hates"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/hates"/>
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/talks"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/talks"/>
 
         <Button
+            style="@style/talking_button"
             android:id="@+id/eats"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
             android:text="@string/eats"/>
 
     </LinearLayout>
