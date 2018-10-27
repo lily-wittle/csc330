@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         // set up media player
         myPlayer = new MediaPlayer();
         myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        myPlayer.setOnCompletionListener(this);
         myPlayerIsPaused = false;
 
         Log.i("IN onCreate", "Layout and media player created ok");
