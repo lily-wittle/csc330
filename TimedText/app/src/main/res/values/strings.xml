@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Timed Text</string>
+    <string name="hint">Enter Notes</string>
+    <string name="save">Save Note</string>
+    <string name="view">View List</string>
+</resources>
