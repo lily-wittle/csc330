@@ -9,10 +9,10 @@ public class DataRoomEntity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    @ColumnInfo(name = "text")
-    private String text;
+    @ColumnInfo(name = "note")
+    private String note;
     @ColumnInfo(name = "time")
-    private long seconds;
+    private long time;
 
     public DataRoomEntity() {
     }
@@ -21,24 +21,24 @@ public class DataRoomEntity {
         return(id);
     }
 
-    public String getText() {
-        return(text);
+    public String getNote() {
+        return(note);
     }
 
     public long getTime() {
-        return(seconds);
+        return(time);
     }
 
     public void setId(int newId) {
         id = newId;
     }
 
-    public void setText(String newText) {
-        text = newText;
+    public void setNote(String newNote) {
+        note = newNote;
     }
 
-    public void setTime(long newSeconds) {
-        seconds = newSeconds;
+    public void setTime(long newTime) {
+        time = newTime;
     }
 
 }
