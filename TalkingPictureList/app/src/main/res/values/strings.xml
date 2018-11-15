@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Talking Picture List</string>
+    <string name="talk_prompt">Now you can talk</string>
+</resources>

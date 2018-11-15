@@ -1,20 +1,30 @@
 package io.github.lily_wittle.talkingpicturelist;
 
+import android.arch.persistence.room.Room;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private Cursor audioCursor;
     private MediaPlayer myPlayer;
     private boolean myPlayerIsPaused;
+    private static final String DATABASE_NAME = "ImageAndDescription.db";
+    private DataRoomDB imageAndDescriptionDB;
+    private List<DataRoomEntity> globalListOfEntity;
+    private TextToSpeech mySpeaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
         myPlayer.setLooping(true);
         myPlayerIsPaused = false;
 
-        Log.i("IN onCreate", "Layout and media player created ok");
-
-        // get audio content
+        // get audio content and play a random song
         String[] audioQueryFields = {
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
@@ -60,5 +68,47 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.i("IN onCreate audio", "Cannot fetch songs");
         }
+
+        // get database
+        imageAndDescriptionDB = Room.databaseBuilder(getApplicationContext(),
+                DataRoomDB.class,DATABASE_NAME).allowMainThreadQueries().build();
+
+        // TODO: update database from media store
+
+        // get global list of entities
+        globalListOfEntity = imageAndDescriptionDB.daoAccess().fetchAll();
+
+        // TODO: fill list view
+
+        // make a TTS
+        mySpeaker = new TextToSpeech(this,this);
+        mySpeaker.setOnUtteranceProgressListener(myListener);
     }
+
+    public void onInit(int status) {
+
+        if (status == TextToSpeech.SUCCESS) {
+            Toast.makeText(this,R.string.talk_prompt,Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this,"You need to install TextToSpeech",
+                    Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    private UtteranceProgressListener myListener =
+            new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {
+                }
+
+                @Override
+                public void onDone(String utteranceId) {
+                }
+
+                @Override
+                public void onError(String utteranceId) {
+                }
+            };
+
 }

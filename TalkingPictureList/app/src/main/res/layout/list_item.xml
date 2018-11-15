@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <ImageView android:id="@+id/item_image"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/image_weight"
+        android:layout_height="@dimen/image_height">
+    </ImageView>
+    <TextView android:id="@+id/item_text"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/text_weight"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/text_size">
+    </TextView>
+
+</LinearLayout>
