@@ -13,6 +13,9 @@ public interface DataRoomAccess {
     @Query("SELECT * FROM ImageAndDescription")
     List<DataRoomEntity> fetchAll();
 
+    @Query("SELECT * FROM ImageAndDescription where imageId LIKE :id")
+    DataRoomEntity getEntryByImageId(long id);
+
     @Insert
     void addEntry(DataRoomEntity newEntry);
 
