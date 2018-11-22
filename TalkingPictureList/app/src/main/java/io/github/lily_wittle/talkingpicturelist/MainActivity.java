@@ -1,6 +1,8 @@
 package io.github.lily_wittle.talkingpicturelist;
 
+import android.app.Activity;
 import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -24,10 +26,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener,
-        SimpleAdapter.ViewBinder, AdapterView.OnItemClickListener, MediaPlayer.OnCompletionListener,
+public class MainActivity extends AppCompatActivity implements
+        TextToSpeech.OnInitListener,
+        SimpleAdapter.ViewBinder,
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener,
+        MediaPlayer.OnCompletionListener,
         ImageDialogFragment.StopTalking {
 
+    private static final int ACTIVITY_EDIT = 1;
     private Cursor globalMediaStoreCursor;
     private MediaPlayer myPlayer;
     private boolean myPlayerIsPaused;
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private DataRoomDB imageAndDescriptionDB;
     private List<DataRoomEntity> globalListOfEntity;
     private TextToSpeech mySpeaker;
+    private int globalIJustEdited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         // fill list view
         fillListView();
 
-        // make a TTS
+        // make a tts
         mySpeaker = new TextToSpeech(this,this);
     }
 
@@ -77,21 +85,25 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         globalMediaStoreCursor.close();
         // release media player
         myPlayer.release();
-        // shut down TTS
+        // shut down tts
         mySpeaker.shutdown();
     }
 
     private void startRandomSong() {
+        // start playing a random song from the media store
+
         // want id, title, and data for each song
         String[] audioQueryFields = {
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DATA
         };
+
         // query the media store
         Cursor audioCursor = getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, audioQueryFields, null, null,
                 MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+
         // get songs from audio cursor
         if (audioCursor != null) {
             int numSongs = audioCursor.getCount();
@@ -119,22 +131,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void updateDBFromMediaStore() {
+        // update database from media store images
+
         // want id and data for each image
         String[] imageQueryFields = {
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATA,
         };
+
         // query the media store
         globalMediaStoreCursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,imageQueryFields,null,null,
                 MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+
         // get images from image cursor
         if (globalMediaStoreCursor != null & globalMediaStoreCursor.getCount() > 0) {
             globalMediaStoreCursor.moveToFirst();
             do {
+                // get image id
                 long imageId = globalMediaStoreCursor.getLong(
                         globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media._ID));
-                // if not in db, add to db
+
+                // if not in database, add new entry to database
                 if (imageAndDescriptionDB.daoAccess().getEntryByImageId(imageId) == null) {
                     DataRoomEntity imageData = new DataRoomEntity();
                     imageData.setImageId(imageId);
@@ -164,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         listAdapter.setViewBinder(this);
         // set click listeners
         theList.setOnItemClickListener(this);
-        // TODO: long click
+        theList.setOnItemLongClickListener(this);
         theList.setAdapter(listAdapter);
     }
 
@@ -188,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public boolean setViewValue(View view, Object data, String asText) {
+        // for use in list view adapter
         switch(view.getId()) {
             // set thumbnail
             case R.id.item_image:
@@ -199,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     ((TextView)view).setText((String)data);
                 }
                 else {
+                    // if description not set yet, use default
                     ((TextView)view).setText(getResources().getString(R.string.no_known_description_text));
                 }
                 break;
@@ -208,6 +228,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // when list view item is clicked, speak description and show image dialog
+
         // get image URI
         globalMediaStoreCursor.moveToPosition(position);
         int dataIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media.DATA);
@@ -221,8 +243,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         thePhotoDialogFragment.show(getFragmentManager(),"my_fragment");
 
         // pause song
-        myPlayer.pause();
-        myPlayerIsPaused = true;
+        pauseMusic();
 
         // speak description
         String whatToSay = ((TextView)view.findViewById(R.id.item_text)).getText().toString();
@@ -233,16 +254,72 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        // when list view item is long clicked, open edit activity for the image
+
+        // get db entry and save id in globalIJustEdited
+        DataRoomEntity dbEntry = globalListOfEntity.get(position);
+        globalIJustEdited = dbEntry.getId();
+
+        // get image URI
+        globalMediaStoreCursor.moveToPosition(position);
+        int dataIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media.DATA);
+        Uri fullImageURI = Uri.parse(globalMediaStoreCursor.getString(dataIndex));
+
+        // pause song
+        pauseMusic();
+
+        // start edit activity
+        Intent editIntent = new Intent();
+        editIntent.setClassName("io.github.lily_wittle.talkingpicturelist",
+                "io.github.lily_wittle.talkingpicturelist.EditActivity");
+        editIntent.putExtra("image_uri_as_string", fullImageURI.toString());
+        String description = ((TextView)view.findViewById(R.id.item_text)).getText().toString();
+        editIntent.putExtra("image_description", description);
+        startActivityForResult(editIntent, ACTIVITY_EDIT);
+
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+
+        // resume song
+        resumeMusic();
+
+        switch(requestCode) {
+            // on edit activity result
+            case ACTIVITY_EDIT:
+                if (resultCode == Activity.RESULT_OK) {
+                    // get new data from edit activity
+                    String new_description = data.getStringExtra("new_description");
+                    // update database
+                    DataRoomEntity theEntry = imageAndDescriptionDB.daoAccess().getEntryById(globalIJustEdited);
+                    DataRoomEntity newEntry = new DataRoomEntity();
+                    newEntry.setId(globalIJustEdited);
+                    newEntry.setImageId(theEntry.getImageId());
+                    newEntry.setDescription(new_description);
+                    imageAndDescriptionDB.daoAccess().updateEntry(newEntry);
+                    // update list view
+                    globalListOfEntity = imageAndDescriptionDB.daoAccess().fetchAll();
+                    fillListView();
+                }
+                break;
+        }
+
+    }
+
     public void stopTalking() {
-        // stop TTS
+        // stop tts
         mySpeaker.speak("", TextToSpeech.QUEUE_FLUSH, null, null);
         // resume song
-        myPlayer.start();
-        myPlayerIsPaused = false;
+        resumeMusic();
     }
 
     public void onInit(int status) {
-        // initialize TTS
+        // initialize tts
         if (status == TextToSpeech.SUCCESS) {
             Toast.makeText(this,R.string.talk_prompt,Toast.LENGTH_SHORT).show();
         } else {
@@ -255,20 +332,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public void onResume() {
         super.onResume();
         // play the music when app is resumed
-        if (myPlayerIsPaused) {
-            myPlayer.start();
-            myPlayerIsPaused = false;
-        }
+        resumeMusic();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         // pause the music when app is paused
-        if (myPlayer.isPlaying()) {
-            myPlayer.pause();
-            myPlayerIsPaused = true;
-        }
+        pauseMusic();
     }
 
     @Override
@@ -276,4 +347,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         // start a new random song once song is over
         startRandomSong();
     }
+
+    private void resumeMusic() {
+        // if player is paused, start music
+        if (myPlayerIsPaused) {
+            myPlayer.start();
+            myPlayerIsPaused = false;
+        }
+    }
+
+    private void pauseMusic() {
+        // if player is playing, pause music
+        if (myPlayer.isPlaying()) {
+            myPlayer.pause();
+        }
+        myPlayerIsPaused = true;
+    }
+
 }

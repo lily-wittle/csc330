@@ -4,6 +4,7 @@
     <dimen name="button_height">60dp</dimen>
     <dimen name="button_width">120dp</dimen>
     <dimen name="margin">20dp</dimen>
+    <dimen name="divider">10dp</dimen>
     <dimen name="img_width">400dp</dimen>
     <dimen name="img_height">300dp</dimen>
     <integer name="image_weight">20</integer>

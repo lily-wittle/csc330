@@ -16,10 +16,13 @@ public interface DataRoomAccess {
     @Query("SELECT * FROM ImageAndDescription where imageId LIKE :id")
     DataRoomEntity getEntryByImageId(long id);
 
+    @Query("SELECT * FROM ImageAndDescription where id LIKE :id")
+    DataRoomEntity getEntryById(int id);
+
     @Insert
     void addEntry(DataRoomEntity newEntry);
 
     @Update
-    void updateDescription(DataRoomEntity newEntry);
+    void updateEntry(DataRoomEntity newEntry);
 
 }

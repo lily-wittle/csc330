@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">MY Talking Picture List</string>
+    <string name="app_name">Talking Picture List</string>
     <string name="talk_prompt">Now you can talk</string>
     <string name="install_required">You need to install TextToSpeech</string>
     <string name="no_known_description_text">No description yet</string>
     <string name="dismiss">Dismiss</string>
+    <string name="save">Save Description</string>
 </resources>
