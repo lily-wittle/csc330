@@ -1,6 +1,7 @@
 package io.github.lily_wittle.talkingpicturelist;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -24,5 +25,8 @@ public interface DataRoomAccess {
 
     @Update
     void updateEntry(DataRoomEntity newEntry);
+
+    @Delete
+    void deleteEntry(DataRoomEntity entryToDelete);
 
 }

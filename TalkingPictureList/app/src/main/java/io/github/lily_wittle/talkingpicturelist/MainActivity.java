@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements
             } while (globalMediaStoreCursor.moveToNext());
         }
         else {
-            Log.i("IN onCreate image", "Cannot fetch images");
+            Log.i("IN onCreate image", "No images fetched");
         }
     }
 
@@ -187,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private ArrayList<HashMap<String,Object>> fetchAllTalkingPictures() {
+        // refresh globalListOfEntity
+        globalListOfEntity = imageAndDescriptionDB.daoAccess().fetchAll();
         // convert globalListOfEntity to ArrayList
         ArrayList<HashMap<String,Object>> listItems = new ArrayList<>();
         for (DataRoomEntity oneImage : globalListOfEntity) {
@@ -198,8 +200,15 @@ public class MainActivity extends AppCompatActivity implements
             Bitmap thumbnailBitmap = MediaStore.Images.Thumbnails.getThumbnail(
                     getContentResolver(),imageId,
                     MediaStore.Images.Thumbnails.MICRO_KIND,null);
-            oneItem.put("thumbnail", thumbnailBitmap);
-            listItems.add(oneItem);
+            if (thumbnailBitmap!= null) {
+                oneItem.put("thumbnail", thumbnailBitmap);
+                listItems.add(oneItem);
+            }
+            else {
+                // null thumbnail, need to delete from db
+                imageAndDescriptionDB.daoAccess().deleteEntry(oneImage);
+                globalListOfEntity.remove(oneImage);
+            }
         }
         return(listItems);
     }
@@ -230,27 +239,30 @@ public class MainActivity extends AppCompatActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // when list view item is clicked, speak description and show image dialog
 
-        // get image URI
-        globalMediaStoreCursor.moveToPosition(position);
-        int dataIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media.DATA);
-        Uri fullImageURI = Uri.parse(globalMediaStoreCursor.getString(dataIndex));
+        // get db entry
+        DataRoomEntity dbEntry = globalListOfEntity.get(position);
 
-        // create and show dialog
-        ImageDialogFragment thePhotoDialogFragment = new ImageDialogFragment();
-        Bundle bundleToFragment = new Bundle();
-        bundleToFragment.putString("image_uri_as_string", fullImageURI.toString());
-        thePhotoDialogFragment.setArguments(bundleToFragment);
-        thePhotoDialogFragment.show(getFragmentManager(),"my_fragment");
+        // get image uri for image in db entry
+        Uri fullImageURI = getImageURI(dbEntry);
+        if(fullImageURI != null) {
 
-        // pause song
-        pauseMusic();
+            // create and show dialog
+            ImageDialogFragment thePhotoDialogFragment = new ImageDialogFragment();
+            Bundle bundleToFragment = new Bundle();
+            bundleToFragment.putString("image_uri_as_string", fullImageURI.toString());
+            thePhotoDialogFragment.setArguments(bundleToFragment);
+            thePhotoDialogFragment.show(getFragmentManager(), "my_fragment");
 
-        // speak description
-        String whatToSay = ((TextView)view.findViewById(R.id.item_text)).getText().toString();
-        if (whatToSay.length() > 0) {
-            mySpeaker.speak(whatToSay,TextToSpeech.QUEUE_ADD,null, null);
-        } else {
-            Toast.makeText(this,"Nothing to say",Toast.LENGTH_SHORT).show();
+            // pause song
+            pauseMusic();
+
+            // speak description
+            String whatToSay = ((TextView) view.findViewById(R.id.item_text)).getText().toString();
+            if (whatToSay.length() > 0) {
+                mySpeaker.speak(whatToSay, TextToSpeech.QUEUE_ADD, null, null);
+            } else {
+                Toast.makeText(this, "Nothing to say", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -262,22 +274,22 @@ public class MainActivity extends AppCompatActivity implements
         DataRoomEntity dbEntry = globalListOfEntity.get(position);
         globalIJustEdited = dbEntry.getId();
 
-        // get image URI
-        globalMediaStoreCursor.moveToPosition(position);
-        int dataIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media.DATA);
-        Uri fullImageURI = Uri.parse(globalMediaStoreCursor.getString(dataIndex));
+        // get image uri for image in db entry
+        Uri fullImageURI = getImageURI(dbEntry);
+        if(fullImageURI != null) {
 
-        // pause song
-        pauseMusic();
+            // pause song
+            pauseMusic();
 
-        // start edit activity
-        Intent editIntent = new Intent();
-        editIntent.setClassName("io.github.lily_wittle.talkingpicturelist",
-                "io.github.lily_wittle.talkingpicturelist.EditActivity");
-        editIntent.putExtra("image_uri_as_string", fullImageURI.toString());
-        String description = ((TextView)view.findViewById(R.id.item_text)).getText().toString();
-        editIntent.putExtra("image_description", description);
-        startActivityForResult(editIntent, ACTIVITY_EDIT);
+            // start edit activity
+            Intent editIntent = new Intent();
+            editIntent.setClassName("io.github.lily_wittle.talkingpicturelist",
+                    "io.github.lily_wittle.talkingpicturelist.EditActivity");
+            editIntent.putExtra("image_uri_as_string", fullImageURI.toString());
+            String description = ((TextView) view.findViewById(R.id.item_text)).getText().toString();
+            editIntent.putExtra("image_description", description);
+            startActivityForResult(editIntent, ACTIVITY_EDIT);
+        }
 
         return true;
     }
@@ -303,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements
                     newEntry.setDescription(new_description);
                     imageAndDescriptionDB.daoAccess().updateEntry(newEntry);
                     // update list view
-                    globalListOfEntity = imageAndDescriptionDB.daoAccess().fetchAll();
                     fillListView();
                 }
                 break;
@@ -333,6 +344,9 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
         // play the music when app is resumed
         resumeMusic();
+        // update list view
+        updateDBFromMediaStore();
+        fillListView();
     }
 
     @Override
@@ -362,6 +376,39 @@ public class MainActivity extends AppCompatActivity implements
             myPlayer.pause();
         }
         myPlayerIsPaused = true;
+    }
+
+    private Uri getImageURI(DataRoomEntity dbEntry) {
+        // return image uri for the image corresponding to db entry
+        long desiredImageId = dbEntry.getImageId();
+        boolean imageFound;
+        if (globalMediaStoreCursor != null & globalMediaStoreCursor.getCount() > 0) {
+            // we will move cursor until image found or there are no more images left in media store
+            globalMediaStoreCursor.moveToFirst();
+            int idIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media._ID);
+            do {
+                // loop through media store until image found with matching image id
+                imageFound = (desiredImageId == globalMediaStoreCursor.getLong(idIndex));
+            } while (!imageFound && globalMediaStoreCursor.moveToNext());
+
+            // if the image is found, return its uri
+            if(imageFound) {
+                int dataIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                Log.i("IN getImageURIAsString", "MATCH FOUND");
+                return Uri.parse(globalMediaStoreCursor.getString(dataIndex));
+            }
+            // no more images in media store and no match has been found
+            else {
+                Log.i("IN getImageURIAsString", "No match in media store for " + desiredImageId);
+            }
+        }
+        else {
+            Log.i("IN getImageURIAsString", "No images found from globalMediaStoreCursor");
+        }
+        // delete image from database since it has no match in the media store
+        imageAndDescriptionDB.daoAccess().deleteEntry(dbEntry);
+        fillListView();
+        return null;
     }
 
 }
