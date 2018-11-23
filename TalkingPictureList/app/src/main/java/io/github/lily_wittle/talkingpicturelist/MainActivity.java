@@ -35,17 +35,19 @@ public class MainActivity extends AppCompatActivity implements
         ImageDialogFragment.StopTalking {
 
     private static final int ACTIVITY_EDIT = 1;
-    private Cursor globalMediaStoreCursor;
-    private MediaPlayer myPlayer;
-    private boolean myPlayerIsPaused;
     private static final String DATABASE_NAME = "ImageAndDescription.db";
     private DataRoomDB imageAndDescriptionDB;
-    private List<DataRoomEntity> globalListOfEntity;
+    private MediaPlayer myPlayer;
+    private boolean myPlayerIsPaused;
     private TextToSpeech mySpeaker;
+    private Cursor globalMediaStoreCursor;
+    private List<DataRoomEntity> globalListOfEntity;
     private int globalIJustEdited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // when app is created, need to set up db/cursors/media player/speaker and fill view
+
         // set content view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onDestroy() {
+        // when the app is destroyed, need to close db/cursors/media player/speaker
+
         super.onDestroy();
         // close database
         imageAndDescriptionDB.close();
@@ -159,14 +163,18 @@ public class MainActivity extends AppCompatActivity implements
                     imageAndDescriptionDB.daoAccess().addEntry(imageData);
                 }
             } while (globalMediaStoreCursor.moveToNext());
+
+            // update globalListOfEntity since we may have new database entries
+            globalListOfEntity = imageAndDescriptionDB.daoAccess().fetchAll();
         }
         else {
-            Log.i("IN onCreate image", "No images fetched");
+            Log.i("IN onCreate image", "No images found");
         }
     }
 
     private void fillListView() {
         // use adapter to fill list view
+
         String[] displayFields = {
                 "thumbnail",
                 "description"
@@ -187,8 +195,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private ArrayList<HashMap<String,Object>> fetchAllTalkingPictures() {
-        // refresh globalListOfEntity
-        globalListOfEntity = imageAndDescriptionDB.daoAccess().fetchAll();
+        // get arraylist of all talking pictures with their descriptions and thumbnails
+
         // convert globalListOfEntity to ArrayList
         ArrayList<HashMap<String,Object>> listItems = new ArrayList<>();
         for (DataRoomEntity oneImage : globalListOfEntity) {
@@ -201,11 +209,12 @@ public class MainActivity extends AppCompatActivity implements
                     getContentResolver(),imageId,
                     MediaStore.Images.Thumbnails.MICRO_KIND,null);
             if (thumbnailBitmap!= null) {
+                // make sure we have a non-null thumbnail bitmap
                 oneItem.put("thumbnail", thumbnailBitmap);
                 listItems.add(oneItem);
             }
             else {
-                // null thumbnail, need to delete from db
+                // if we have a null thumbnail, need to delete from db
                 imageAndDescriptionDB.daoAccess().deleteEntry(oneImage);
                 globalListOfEntity.remove(oneImage);
             }
@@ -215,7 +224,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean setViewValue(View view, Object data, String asText) {
-        // for use in list view adapter
+        // for use in list view adapter, setting image thumbnail and description
+
         switch(view.getId()) {
             // set thumbnail
             case R.id.item_image:
@@ -290,12 +300,13 @@ public class MainActivity extends AppCompatActivity implements
             editIntent.putExtra("image_description", description);
             startActivityForResult(editIntent, ACTIVITY_EDIT);
         }
-
-        return true;
+        return(true);
     }
 
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
+        // for when edit activity finishes and description needs to be updated in the database
+
         super.onActivityResult(requestCode,resultCode,data);
 
         // resume song
@@ -314,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements
                     newEntry.setImageId(theEntry.getImageId());
                     newEntry.setDescription(new_description);
                     imageAndDescriptionDB.daoAccess().updateEntry(newEntry);
-                    // update list view
+                    // update list view to reflect new description
                     fillListView();
                 }
                 break;
@@ -323,14 +334,17 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void stopTalking() {
-        // stop tts
+        // stop tts and resume song
+
+        // flush the tts queue
         mySpeaker.speak("", TextToSpeech.QUEUE_FLUSH, null, null);
-        // resume song
+        // resume music
         resumeMusic();
     }
 
     public void onInit(int status) {
         // initialize tts
+
         if (status == TextToSpeech.SUCCESS) {
             Toast.makeText(this,R.string.talk_prompt,Toast.LENGTH_SHORT).show();
         } else {
@@ -341,37 +355,43 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onResume() {
+        // play the music and update list view when app is resumed
+
         super.onResume();
-        // play the music when app is resumed
+        // play the music
         resumeMusic();
-        // update list view
+        // update list view with any new images from media store
         updateDBFromMediaStore();
         fillListView();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         // pause the music when app is paused
+
+        super.onPause();
         pauseMusic();
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
         // start a new random song once song is over
+
         startRandomSong();
     }
 
     private void resumeMusic() {
         // if player is paused, start music
+
         if (myPlayerIsPaused) {
             myPlayer.start();
-            myPlayerIsPaused = false;
         }
+        myPlayerIsPaused = false;
     }
 
     private void pauseMusic() {
         // if player is playing, pause music
+
         if (myPlayer.isPlaying()) {
             myPlayer.pause();
         }
@@ -380,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Uri getImageURI(DataRoomEntity dbEntry) {
         // return image uri for the image corresponding to db entry
+
         long desiredImageId = dbEntry.getImageId();
         boolean imageFound;
         if (globalMediaStoreCursor != null & globalMediaStoreCursor.getCount() > 0) {
@@ -407,6 +428,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         // delete image from database since it has no match in the media store
         imageAndDescriptionDB.daoAccess().deleteEntry(dbEntry);
+        globalListOfEntity.remove(dbEntry);
         fillListView();
         return null;
     }
