@@ -5,4 +5,5 @@
     <string name="no_known_description_text">No description yet</string>
     <string name="dismiss">Dismiss</string>
     <string name="save">Save Description</string>
+    <string name="no_image_found">Image has been deleted</string>
 </resources>

@@ -270,9 +270,7 @@ public class MainActivity extends AppCompatActivity implements
             String whatToSay = ((TextView) view.findViewById(R.id.item_text)).getText().toString();
             if (whatToSay.length() > 0) {
                 mySpeaker.speak(whatToSay, TextToSpeech.QUEUE_ADD, null, null);
-            } else {
-                Toast.makeText(this, "Nothing to say", Toast.LENGTH_SHORT).show();
-            }
+            } 
         }
     }
 
@@ -415,7 +413,6 @@ public class MainActivity extends AppCompatActivity implements
             // if the image is found, return its uri
             if(imageFound) {
                 int dataIndex = globalMediaStoreCursor.getColumnIndex(MediaStore.Images.Media.DATA);
-                Log.i("IN getImageURIAsString", "MATCH FOUND");
                 return Uri.parse(globalMediaStoreCursor.getString(dataIndex));
             }
             // no more images in media store and no match has been found
@@ -427,6 +424,8 @@ public class MainActivity extends AppCompatActivity implements
             Log.i("IN getImageURIAsString", "No images found from globalMediaStoreCursor");
         }
         // delete image from database since it has no match in the media store
+        // we only reach this code if image has not been found or media store cursor returns no images
+        Toast.makeText(this, getResources().getString(R.string.no_image_found), Toast.LENGTH_LONG).show();
         imageAndDescriptionDB.daoAccess().deleteEntry(dbEntry);
         globalListOfEntity.remove(dbEntry);
         fillListView();
