@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Where Am I Again?</string>
+    <string name="talk_prompt">Now you can talk</string>
+    <string name="no_tts">You need to install TextToSpeech</string>
+    <string name="not_moved">Not moved</string>
+
+    <integer name="time_between_location_updates_ms">10000</integer>
+</resources>
