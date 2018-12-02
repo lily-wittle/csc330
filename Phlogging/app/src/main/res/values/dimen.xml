@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="title_size">16sp</dimen>
+    <dimen name="date_size">12sp</dimen>
+    <dimen name="item_height">60dp</dimen>
+    <dimen name="margin">20dp</dimen>
+    <dimen name="divider">10dp</dimen>
+    <dimen name="img_width">400dp</dimen>
+    <dimen name="img_height">300dp</dimen>
+    <dimen name="enter_text_height">200dp</dimen>
+    <dimen name="photo_height">90dp</dimen>
+    <dimen name="photo_width">120dp</dimen>
+
+    <integer name="thumbnail_weight">15</integer>
+    <integer name="title_weight">45</integer>
+    <integer name="date_weight">30</integer>
+    <integer name="button_weight">10</integer>
+</resources>

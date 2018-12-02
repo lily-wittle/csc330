@@ -1,0 +1,37 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/divider">
+
+    <ImageView
+        android:id="@+id/item_thumbnail"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/thumbnail_weight"
+        android:layout_height="@dimen/item_height">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/title_weight"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/title_size">
+    </TextView>
+
+    <TextView
+        android:id="@+id/item_date"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/date_weight"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/date_size">
+    </TextView>
+
+    <Button
+        android:id="@+id/item_delete"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/button_weight"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
