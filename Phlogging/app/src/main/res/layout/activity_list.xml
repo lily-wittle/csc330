@@ -9,7 +9,8 @@
         android:id="@+id/create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create"/>
+        android:text="@string/create"
+        android:onClick="myClickHandler"/>
     
     <ListView
         android:layout_width="match_parent"

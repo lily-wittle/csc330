@@ -14,4 +14,5 @@
     <integer name="title_weight">45</integer>
     <integer name="date_weight">30</integer>
     <integer name="button_weight">10</integer>
+    <integer name="time_between_location_updates_ms">60000</integer>
 </resources>

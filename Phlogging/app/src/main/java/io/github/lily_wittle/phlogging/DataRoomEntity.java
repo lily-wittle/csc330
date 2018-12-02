@@ -3,6 +3,7 @@ package io.github.lily_wittle.phlogging;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.Bitmap;
 import android.location.Location;
 
 @Entity (tableName = "PhlogEntry")
@@ -16,8 +17,8 @@ public class DataRoomEntity {
     private long time;
     @ColumnInfo(name = "text")
     private String text;
-    @ColumnInfo(name = "imageId")
-    private long imageId;
+    @ColumnInfo(name = "photo")
+    private Bitmap photo;
     @ColumnInfo(name = "location")
     private Location location;
     @ColumnInfo(name = "orientation")
@@ -41,8 +42,8 @@ public class DataRoomEntity {
         return text;
     }
 
-    public long getImageId() {
-        return imageId;
+    public Bitmap getPhoto() {
+        return photo;
     }
 
     public Location getLocation() {
@@ -69,8 +70,8 @@ public class DataRoomEntity {
         text = newText;
     }
 
-    public void setImageId(long newImageId) {
-        imageId = newImageId;
+    public void setPhoto(Bitmap newPhoto) {
+        photo = newPhoto;
     }
 
     public void setLocation(Location newLocation) {
