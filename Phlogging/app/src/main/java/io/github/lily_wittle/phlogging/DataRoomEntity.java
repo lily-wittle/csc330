@@ -18,9 +18,11 @@ public class DataRoomEntity {
     @ColumnInfo(name = "text")
     private String text;
     @ColumnInfo(name = "photo")
-    private Bitmap photo;
-    @ColumnInfo(name = "location")
-    private Location location;
+    private String photo;
+    @ColumnInfo(name = "latitude")
+    private double latitude;
+    @ColumnInfo(name = "longitude")
+    private double longitude;
     @ColumnInfo(name = "orientation")
     private float orientation;
 
@@ -42,12 +44,16 @@ public class DataRoomEntity {
         return text;
     }
 
-    public Bitmap getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     public float getOrientation() {
@@ -70,12 +76,16 @@ public class DataRoomEntity {
         text = newText;
     }
 
-    public void setPhoto(Bitmap newPhoto) {
+    public void setPhoto(String newPhoto) {
         photo = newPhoto;
     }
 
-    public void setLocation(Location newLocation) {
-        location = newLocation;
+    public void setLatitude(double newLatitude) {
+        latitude = newLatitude;
+    }
+
+    public void setLongitude(double newLongitude) {
+        longitude = newLongitude;
     }
 
     public void setOrientation(float newOrientation) {

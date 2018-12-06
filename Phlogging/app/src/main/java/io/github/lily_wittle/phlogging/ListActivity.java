@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -49,15 +50,21 @@ public class ListActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     // get extras from intent
                     String title = returnedIntent.getStringExtra("title");
+                    long time = returnedIntent.getLongExtra("time", System.currentTimeMillis());
                     String text = returnedIntent.getStringExtra("text");
-                    Bitmap photoBitmap = returnedIntent.getParcelableExtra("photo_bitmap");
-                    Location location = returnedIntent.getParcelableExtra("location");
+                    String photo_uri = returnedIntent.getStringExtra("photo_uri");
+                    double latitude = returnedIntent.getDoubleExtra("latitude", 0);
+                    double longitude = returnedIntent.getDoubleExtra("longitude", 0);
+                    float orientation = returnedIntent.getFloatExtra("orientation", 0);
                     // make new entry
                     DataRoomEntity newPhlog = new DataRoomEntity();
                     newPhlog.setTitle(title);
+                    newPhlog.setTime(time);
                     newPhlog.setText(text);
-                    newPhlog.setPhoto(photoBitmap);
-                    newPhlog.setLocation(location);
+                    newPhlog.setPhoto(photo_uri);
+                    newPhlog.setLatitude(latitude);
+                    newPhlog.setLongitude(longitude);
+                    newPhlog.setOrientation(orientation);
                     // insert into db
                     phloggingDB.daoAccess().addPhlog(newPhlog);
                 }
