@@ -6,7 +6,7 @@
     android:layout_margin="@dimen/divider">
 
     <ImageView
-        android:id="@+id/item_thumbnail"
+        android:id="@+id/item_photo"
         android:layout_width="0dp"
         android:layout_weight="@integer/thumbnail_weight"
         android:layout_height="@dimen/item_height">

@@ -95,7 +95,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
             case R.id.save:
                 // return intent to list activity
                 Intent returnIntent = new Intent();
-                // put title, time, text, photo, location, orientation in intent
+                // put title, time, text, photo in intent
                 String title = ((EditText)findViewById(R.id.enter_title)).getText().toString();
                 returnIntent.putExtra("title", title);
                 returnIntent.putExtra("time", currentTime);

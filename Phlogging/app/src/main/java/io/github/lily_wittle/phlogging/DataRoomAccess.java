@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface DataRoomAccess {
     @Query("SELECT * FROM PhlogEntry ORDER BY time DESC")
-    List<DataRoomEntity> fetchAllPhlogs();
+    List<DataRoomEntity> fetchAll();
 
     @Insert
     void addPhlog(DataRoomEntity newPhlog);
