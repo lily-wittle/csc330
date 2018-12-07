@@ -45,6 +45,14 @@ public class ListActivity extends AppCompatActivity implements
         fillListView();
     }
 
+    @Override
+    public void onDestroy() {
+        // when the app is destroyed, need to close database as well
+
+        super.onDestroy();
+        phloggingDB.close();
+    }
+
     public void myClickHandler(View view) {
         // deal with click to create button
         switch (view.getId()) {
@@ -74,7 +82,7 @@ public class ListActivity extends AppCompatActivity implements
                     double latitude = returnedIntent.getDoubleExtra("latitude", 0);
                     double longitude = returnedIntent.getDoubleExtra("longitude", 0);
                     float orientation = returnedIntent.getFloatExtra("orientation", 0);
-                    // make new entry
+                    // make new entry and insert into db
                     DataRoomEntity newPhlog = new DataRoomEntity();
                     newPhlog.setTitle(title);
                     newPhlog.setTime(time);
@@ -83,8 +91,10 @@ public class ListActivity extends AppCompatActivity implements
                     newPhlog.setLatitude(latitude);
                     newPhlog.setLongitude(longitude);
                     newPhlog.setOrientation(orientation);
-                    // insert into db
                     phloggingDB.daoAccess().addPhlog(newPhlog);
+                    // display in list
+                    globalListOfEntity.add(newPhlog);
+                    fillListView();
                 }
                 break;
             default:

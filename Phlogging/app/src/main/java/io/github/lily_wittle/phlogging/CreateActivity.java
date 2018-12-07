@@ -15,7 +15,6 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +35,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
     private ImageView currentPhoto;
     private String cameraFileName;
     private long currentTime;
+    private boolean photoTaken = false;
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location currentLocation;
@@ -88,25 +88,31 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
                 startActivityForResult(cameraIntent, ACTIVITY_TAKE_PICTURE);
                 break;
             case R.id.save:
-                // return intent to list activity
-                Intent returnIntent = new Intent();
-                // put title, time, text, photo in intent
                 String title = ((EditText)findViewById(R.id.enter_title)).getText().toString();
-                returnIntent.putExtra("title", title);
-                returnIntent.putExtra("time", currentTime);
                 String text = ((EditText)findViewById(R.id.enter_text)).getText().toString();
-                returnIntent.putExtra("text", text);
-                String photoUriAsString = Uri.fromFile(new File(cameraFileName)).toString();
-                returnIntent.putExtra("photo_uri", photoUriAsString);
-                // stop location updates and put location in intent
-                fusedLocationClient.removeLocationUpdates(myLocationCallback);
-                returnIntent.putExtra("latitude", currentLocation.getLatitude());
-                returnIntent.putExtra("longitude", currentLocation.getLongitude());
-                // turn off sensor listening and put orientation in intent
-                sensorManager.unregisterListener(this);
-                returnIntent.putExtra("orientation", orientation[0]);
-                setResult(RESULT_OK, returnIntent);
-                finish();
+                // if no title, no text, or no photo, don't return
+                if (title.length() == 0 || text.length() == 0 || ! photoTaken) {
+                    Toast.makeText(this, R.string.incomplete, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // return intent to list activity
+                    Intent returnIntent = new Intent();
+                    // put title, time, text, photo in intent
+                    returnIntent.putExtra("title", title);
+                    returnIntent.putExtra("time", currentTime);
+                    returnIntent.putExtra("text", text);
+                    String photoUriAsString = Uri.fromFile(new File(cameraFileName)).toString();
+                    returnIntent.putExtra("photo_uri", photoUriAsString);
+                    // stop location updates and put location in intent
+                    fusedLocationClient.removeLocationUpdates(myLocationCallback);
+                    returnIntent.putExtra("latitude", currentLocation.getLatitude());
+                    returnIntent.putExtra("longitude", currentLocation.getLongitude());
+                    // turn off sensor listening and put orientation in intent
+                    sensorManager.unregisterListener(this);
+                    returnIntent.putExtra("orientation", orientation[0]);
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
                 break;
             default:
                 break;
@@ -122,6 +128,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
                 if (resultCode == Activity.RESULT_OK) {
                     // display the photo that was taken
                     currentPhoto.setImageURI(Uri.fromFile(new File(cameraFileName)));
+                    photoTaken = true;
                 }
                 break;
         }
@@ -164,6 +171,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
     public void onConfigurationChanged(Configuration newConfig) {}
 
     public void onSensorChanged(SensorEvent event) {
+        // handle changes in gravity and magnetic field sensors
         boolean gravityChanged, magneticFieldChanged;
         float R[] = new float[9];
         float I[] = new float[9];
@@ -195,11 +203,9 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
     }
 
     private boolean arrayCopyChangeTest(float[] from,float[] to, float amountForChange) {
-        // copy new values into array and check for change
-        int copyIndex;
+        // copy new values into array and check for change above threshold
         boolean changed = false;
-
-        for (copyIndex=0;copyIndex < to.length;copyIndex++) {
+        for (int copyIndex=0;copyIndex < to.length;copyIndex++) {
             if (Math.abs(from[copyIndex] - to[copyIndex]) > amountForChange) {
                 to[copyIndex] = from[copyIndex];
                 changed = true;
