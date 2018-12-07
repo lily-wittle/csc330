@@ -172,6 +172,6 @@ public class ListActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        // TODO: open display activity (make display activity)
     }
 }

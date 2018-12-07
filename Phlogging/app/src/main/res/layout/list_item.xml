@@ -18,7 +18,7 @@
         android:layout_weight="@integer/title_weight"
         android:layout_height="match_parent"
         android:textSize="@dimen/title_size"
-        android:layout_marginLeft="@dimen/divider">
+        android:layout_marginStart="@dimen/divider">
     </TextView>
 
     <TextView
@@ -26,13 +26,8 @@
         android:layout_width="0dp"
         android:layout_weight="@integer/date_weight"
         android:layout_height="match_parent"
-        android:textSize="@dimen/date_size">
+        android:textSize="@dimen/date_size"
+        android:layout_marginStart="@dimen/divider">
     </TextView>
-
-    <Button
-        android:id="@+id/item_delete"
-        android:layout_width="0dp"
-        android:layout_weight="@integer/button_weight"
-        android:layout_height="match_parent" />
 
 </LinearLayout>

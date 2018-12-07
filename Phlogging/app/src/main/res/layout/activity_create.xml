@@ -39,6 +39,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/current_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin" />
+
+    <TextView
+        android:id="@+id/current_orientation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin" />
+
     <Button
         android:id="@+id/save"
         android:layout_width="match_parent"

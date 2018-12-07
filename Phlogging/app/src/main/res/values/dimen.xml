@@ -1,18 +1,15 @@
 <resources>
-    <dimen name="title_size">16sp</dimen>
+    <dimen name="title_size">18sp</dimen>
     <dimen name="date_size">12sp</dimen>
-    <dimen name="item_height">60dp</dimen>
+    <dimen name="item_height">70dp</dimen>
     <dimen name="margin">20dp</dimen>
     <dimen name="divider">10dp</dimen>
-    <dimen name="img_width">400dp</dimen>
-    <dimen name="img_height">300dp</dimen>
     <dimen name="enter_text_height">200dp</dimen>
-    <dimen name="photo_height">90dp</dimen>
+    <dimen name="photo_height">100dp</dimen>
     <dimen name="photo_width">120dp</dimen>
 
-    <integer name="thumbnail_weight">15</integer>
+    <integer name="thumbnail_weight">25</integer>
     <integer name="title_weight">50</integer>
     <integer name="date_weight">25</integer>
-    <integer name="button_weight">10</integer>
-    <integer name="time_between_location_updates_ms">10000</integer>
+    <integer name="time_between_location_updates_ms">5000</integer>
 </resources>

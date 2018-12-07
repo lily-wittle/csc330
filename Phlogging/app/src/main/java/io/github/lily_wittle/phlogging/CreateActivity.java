@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -150,6 +151,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
         public void onLocationResult(LocationResult locationResult) {
             // update current location on callback
             currentLocation = locationResult.getLastLocation();
+            displayLocation();
         }
     };
 
@@ -198,7 +200,9 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
             newOrientation[0] = (float)Math.toDegrees(newOrientation[0]);
             newOrientation[1] = (float)Math.toDegrees(newOrientation[1]);
             newOrientation[2] = (float)Math.toDegrees(newOrientation[2]);
-            arrayCopyChangeTest(newOrientation, orientation,2.0f);
+            if (arrayCopyChangeTest(newOrientation, orientation,2.0f)) {
+                displayOrientation();
+            }
         }
     }
 
@@ -212,6 +216,21 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
             }
         }
         return(changed);
+    }
+
+    private void displayLocation() {
+        // update textview to show the current location
+        TextView displayLocation = findViewById(R.id.current_location);
+        String currentLatLong = "Current Location: (" + currentLocation.getLatitude() + ", "
+                + currentLocation.getLongitude() + ")";
+        displayLocation.setText(currentLatLong);
+    }
+
+    private void displayOrientation() {
+        // update textview to show the current orientation
+        TextView displayOrientation = findViewById(R.id.current_orientation);
+        String currentOrientation = "Current Orientation: " + orientation[0] + " degrees";
+        displayOrientation.setText(currentOrientation);
     }
 
 }
