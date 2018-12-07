@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -23,20 +22,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
-import java.sql.Time;
 
 public class CreateActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -73,7 +65,9 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
 
         // get current time in milliseconds and use for photo filename
         currentTime = System.currentTimeMillis();
-        cameraFileName = "Phlogging_Photo_" + currentTime;
+        cameraFileName = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString()
+                + "Phlogging_Photo_" + currentTime + ".jpeg";
 
         // get sensor manager and start
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
