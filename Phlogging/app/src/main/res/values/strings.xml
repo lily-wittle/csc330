@@ -3,4 +3,7 @@
     <string name="create">New Entry</string>
     <string name="save">Save Entry</string>
     <string name="back">Back to List</string>
+    <string name="title_hint">Enter Title Here</string>
+    <string name="text_hint">Enter Phlog Post Text Here</string>
+    <string name="take">Take Photo</string>
 </resources>

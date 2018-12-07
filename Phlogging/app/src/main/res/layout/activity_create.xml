@@ -6,12 +6,14 @@
 
     <EditText
         android:id="@+id/enter_title"
+        android:hint="@string/title_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin"/>
 
     <EditText
         android:id="@+id/enter_text"
+        android:hint="@string/text_hint"
         android:layout_width="match_parent"
         android:layout_height="@dimen/enter_text_height"
         android:layout_marginBottom="@dimen/margin"/>
@@ -24,8 +26,10 @@
 
         <Button
             android:id="@+id/take_photo"
+            android:text="@string/take"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin"
             android:onClick="myCreateClickHandler"/>
 
         <ImageView
