@@ -225,7 +225,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
         TextView display = findViewById(R.id.current_time);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(currentTime);
-        String formattedTime = calendar.getTime().toString();
+        String formattedTime = "Current Date: " + calendar.getTime().toString();
         display.setText(formattedTime);
     }
 

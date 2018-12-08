@@ -1,7 +1,9 @@
 package io.github.lily_wittle.phlogging;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ public class ListActivity extends AppCompatActivity implements
         AdapterView.OnItemClickListener {
 
     private static final int ACTIVITY_CREATE = 1;
+    private static final int ACTIVITY_DETAIL = 2;
     private static final String DATABASE_NAME = "Phlogging.db";
     private DataRoomDB phloggingDB;
     private List<DataRoomEntity> globalListOfEntity;
@@ -91,6 +94,18 @@ public class ListActivity extends AppCompatActivity implements
                     fillListView();
                 }
                 break;
+            case ACTIVITY_DETAIL:
+                // delete entry if delete button was clicked
+                if (resultCode == Activity.RESULT_OK) {
+                    boolean delete = returnedIntent.getBooleanExtra("delete", false);
+                    if (delete) {
+                        int position = returnedIntent.getIntExtra("entryPosition", -1);
+                        if (position >= 0) {
+                            phloggingDB.daoAccess().deletePhlog(globalListOfEntity.get(position));
+                            fillListView();
+                        }
+                    }
+                }
             default:
                 break;
         }
@@ -169,7 +184,7 @@ public class ListActivity extends AppCompatActivity implements
 
         Intent detailActivity = new Intent();
         detailActivity.setClassName("io.github.lily_wittle.phlogging",
-                "io.github.lily_wittle.phlogging.DisplayActivity");
+                "io.github.lily_wittle.phlogging.DetailActivity");
         // put details as extras in intent
         detailActivity.putExtra("title", dbEntry.getTitle());
         detailActivity.putExtra("time", dbEntry.getTime());
@@ -178,9 +193,9 @@ public class ListActivity extends AppCompatActivity implements
         detailActivity.putExtra("latitude", dbEntry.getLatitude());
         detailActivity.putExtra("longitude", dbEntry.getLongitude());
         detailActivity.putExtra("orientation", dbEntry.getOrientation());
+        detailActivity.putExtra("entryPosition", position);
 
-        startActivity(detailActivity);
+        startActivityForResult(detailActivity, ACTIVITY_DETAIL);
     }
 
-    // TODO: long click delete
 }
