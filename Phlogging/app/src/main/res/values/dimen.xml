@@ -5,8 +5,9 @@
     <dimen name="margin">20dp</dimen>
     <dimen name="divider">10dp</dimen>
     <dimen name="enter_text_height">200dp</dimen>
-    <dimen name="photo_height">100dp</dimen>
-    <dimen name="photo_width">120dp</dimen>
+    <dimen name="take_photo_height">100dp</dimen>
+    <dimen name="photo_height">120dp</dimen>
+    <dimen name="photo_width">160dp</dimen>
 
     <integer name="thumbnail_weight">25</integer>
     <integer name="title_weight">50</integer>

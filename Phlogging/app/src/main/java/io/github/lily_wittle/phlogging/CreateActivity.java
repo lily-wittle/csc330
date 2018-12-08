@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
+import java.util.GregorianCalendar;
 
 public class CreateActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -66,6 +67,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
 
         // get current time in milliseconds and use for photo filename
         currentTime = System.currentTimeMillis();
+        displayTime();
         cameraFileName = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES).toString()
                 + "Phlogging_Photo_" + currentTime + ".jpeg";
@@ -103,7 +105,7 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
                     returnIntent.putExtra("time", currentTime);
                     returnIntent.putExtra("text", text);
                     String photoUriAsString = Uri.fromFile(new File(cameraFileName)).toString();
-                    returnIntent.putExtra("photo_uri", photoUriAsString);
+                    returnIntent.putExtra("photo", photoUriAsString);
                     // stop location updates and put location in intent
                     fusedLocationClient.removeLocationUpdates(myLocationCallback);
                     returnIntent.putExtra("latitude", currentLocation.getLatitude());
@@ -218,19 +220,28 @@ public class CreateActivity extends AppCompatActivity implements SensorEventList
         return(changed);
     }
 
+    private void displayTime() {
+        // update textview to show the formatted current date
+        TextView display = findViewById(R.id.current_time);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(currentTime);
+        String formattedTime = calendar.getTime().toString();
+        display.setText(formattedTime);
+    }
+
     private void displayLocation() {
         // update textview to show the current location
-        TextView displayLocation = findViewById(R.id.current_location);
+        TextView display = findViewById(R.id.current_location);
         String currentLatLong = "Current Location: (" + currentLocation.getLatitude() + ", "
                 + currentLocation.getLongitude() + ")";
-        displayLocation.setText(currentLatLong);
+        display.setText(currentLatLong);
     }
 
     private void displayOrientation() {
         // update textview to show the current orientation
-        TextView displayOrientation = findViewById(R.id.current_orientation);
+        TextView display = findViewById(R.id.current_orientation);
         String currentOrientation = "Current Orientation: " + orientation[0] + " degrees";
-        displayOrientation.setText(currentOrientation);
+        display.setText(currentOrientation);
     }
 
 }

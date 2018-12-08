@@ -3,10 +3,7 @@ package io.github.lily_wittle.phlogging;
 import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,15 +37,13 @@ public class ListActivity extends AppCompatActivity implements
         phloggingDB = Room.databaseBuilder(getApplicationContext(),
                 DataRoomDB.class,DATABASE_NAME).allowMainThreadQueries().build();
 
-        // get entries to fill view
-        globalListOfEntity = phloggingDB.daoAccess().fetchAll();
+        // get entries and fill view
         fillListView();
     }
 
     @Override
     public void onDestroy() {
         // when the app is destroyed, need to close database as well
-
         super.onDestroy();
         phloggingDB.close();
     }
@@ -78,7 +73,7 @@ public class ListActivity extends AppCompatActivity implements
                     String title = returnedIntent.getStringExtra("title");
                     long time = returnedIntent.getLongExtra("time", System.currentTimeMillis());
                     String text = returnedIntent.getStringExtra("text");
-                    String photo_uri = returnedIntent.getStringExtra("photo_uri");
+                    String photo = returnedIntent.getStringExtra("photo");
                     double latitude = returnedIntent.getDoubleExtra("latitude", 0);
                     double longitude = returnedIntent.getDoubleExtra("longitude", 0);
                     float orientation = returnedIntent.getFloatExtra("orientation", 0);
@@ -87,13 +82,12 @@ public class ListActivity extends AppCompatActivity implements
                     newPhlog.setTitle(title);
                     newPhlog.setTime(time);
                     newPhlog.setText(text);
-                    newPhlog.setPhoto(photo_uri);
+                    newPhlog.setPhoto(photo);
                     newPhlog.setLatitude(latitude);
                     newPhlog.setLongitude(longitude);
                     newPhlog.setOrientation(orientation);
                     phloggingDB.daoAccess().addPhlog(newPhlog);
                     // display in list
-                    globalListOfEntity.add(newPhlog);
                     fillListView();
                 }
                 break;
@@ -104,16 +98,16 @@ public class ListActivity extends AppCompatActivity implements
 
     private void fillListView() {
         // use adapter to fill list view
-
+        globalListOfEntity = phloggingDB.daoAccess().fetchAll();
         String[] displayFields = {
                 "photo",
                 "title",
-                "date"
+                "time"
         };
         int[] displayViews = {
                 R.id.item_photo,
                 R.id.item_title,
-                R.id.item_date
+                R.id.item_time
         };
         ListView theList = findViewById(R.id.the_list);
         SimpleAdapter listAdapter = new SimpleAdapter(this, fetchAllEntries(),
@@ -126,20 +120,18 @@ public class ListActivity extends AppCompatActivity implements
     }
 
     private ArrayList<HashMap<String,Object>> fetchAllEntries() {
-        // get arraylist of all phlog entries with their thumbnails, titles, and dates
-
-        // convert globalListOfEntity to ArrayList
+        // get arraylist of all phlog entries with their thumbnails, titles, and times
         ArrayList<HashMap<String,Object>> listItems = new ArrayList<>();
         for (DataRoomEntity oneEntry : globalListOfEntity) {
             HashMap<String,Object> oneItem = new HashMap<>();
             // put title in item
             oneItem.put("title", oneEntry.getTitle());
-            // put formatted date in item
+            // put formatted time in item
             long time = oneEntry.getTime();
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.setTimeInMillis(time);
             String formattedTime = calendar.getTime().toString();
-            oneItem.put("date", formattedTime);
+            oneItem.put("time", formattedTime);
             // put photo uri in item
             Uri photoUri = Uri.parse(oneEntry.getPhoto());
             oneItem.put("photo", photoUri);
@@ -151,15 +143,14 @@ public class ListActivity extends AppCompatActivity implements
 
     @Override
     public boolean setViewValue(View view, Object data, String asText) {
-        // for use in list view adapter, setting image thumbnail, title and date
-
+        // for use in list view adapter, setting image thumbnail, title and time
         switch(view.getId()) {
             // set title
             case R.id.item_title:
                 ((TextView)view).setText((String)data);
                 break;
-            // set date
-            case R.id.item_date:
+            // set time
+            case R.id.item_time:
                 ((TextView)view).setText((String)data);
                 break;
             // set photo
@@ -172,6 +163,24 @@ public class ListActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // TODO: open display activity (make display activity)
+        // when item is clicked, open detail activity
+
+        DataRoomEntity dbEntry = globalListOfEntity.get(position);
+
+        Intent detailActivity = new Intent();
+        detailActivity.setClassName("io.github.lily_wittle.phlogging",
+                "io.github.lily_wittle.phlogging.DisplayActivity");
+        // put details as extras in intent
+        detailActivity.putExtra("title", dbEntry.getTitle());
+        detailActivity.putExtra("time", dbEntry.getTime());
+        detailActivity.putExtra("text", dbEntry.getText());
+        detailActivity.putExtra("photo", dbEntry.getPhoto());
+        detailActivity.putExtra("latitude", dbEntry.getLatitude());
+        detailActivity.putExtra("longitude", dbEntry.getLongitude());
+        detailActivity.putExtra("orientation", dbEntry.getOrientation());
+
+        startActivity(detailActivity);
     }
+
+    // TODO: long click delete
 }

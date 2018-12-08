@@ -22,7 +22,7 @@
     </TextView>
 
     <TextView
-        android:id="@+id/item_date"
+        android:id="@+id/item_time"
         android:layout_width="0dp"
         android:layout_weight="@integer/date_weight"
         android:layout_height="match_parent"

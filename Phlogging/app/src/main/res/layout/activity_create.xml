@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/photo_height"
+        android:layout_height="@dimen/take_photo_height"
         android:layout_marginBottom="@dimen/margin"
         android:gravity="center_horizontal">
 
@@ -40,10 +40,16 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/current_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/divider" />
+
+    <TextView
         android:id="@+id/current_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin" />
+        android:layout_margin="@dimen/divider" />
 
     <TextView
         android:id="@+id/current_orientation"

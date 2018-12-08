@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".DetailActivity" />
     </application>
 
     <uses-feature android:name="android.hardware.location.gps" />
